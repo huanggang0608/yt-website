@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.ssmspringboot.dao.MusicMapper">
+
+<select id="searchMusic" resultType="com.example.ssmspringboot.pojo.Music" >
+    select * from music  <where>
+   <if test="type!='全部'">
+   type=#{type}
+   </if>
+</where>
+   order by play_amount desc
+</select>
+    <select id="findMusicById" resultType="com.example.ssmspringboot.pojo.Music">
+    select * from music where music_id=#{musicId}
+</select>
+    <select id="findMusicByName" resultType="com.example.ssmspringboot.pojo.Music">
+        select * from music where music_name like '%${musicName}%'
+    </select>
+    <update id="addPlayAmount">
+        update music set play_amount=play_amount+1 where music_id=#{musicId}
+    </update>
+
+</mapper>

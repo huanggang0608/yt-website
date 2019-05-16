@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.ssmspringboot.dao.CommentMapper">
+    <select id="findAll" resultType="com.example.ssmspringboot.pojo.Comment">
+    select * from comment where music_id=#{musicId} order by createtime desc
+    </select>
+    <select id="findHot" resultType="com.example.ssmspringboot.pojo.Comment">
+    select * from comment where music_id=#{musicId} order by likenum desc limit 10
+    </select>
+    <insert id="add" parameterType="com.example.ssmspringboot.pojo.Comment">
+        insert into comment values (#{id},#{musicId},#{userId},#{userImage},#{nickname},#{content},#{likenum},#{createtime})
+    </insert>
+    <select id="findState" resultType="Integer" >
+        select state from dianzan where comment_id=#{commentId} and user_id=#{userId}
+     </select>
+    <update id="updateStateUp">
+        update dianzan set state=1 where comment_id=#{commentId} and user_id=#{userId}
+
+    </update>
+    <update id="updateStatedown">
+        update dianzan set state=0 where comment_id=#{commentId} and user_id=#{userId}
+    </update>
+    <update id="updateNumUp">
+        update comment set likenum=likenum+1 where id=#{commentId} and user_id=#{userId}
+    </update>
+    <update id="updateUser">
+        update comment
+        <set>
+        <if test="nickname != null">
+            nickname=#{nickname},
+        </if>
+        <if test="image != null">
+            user_image=#{image},
+        </if>
+        </set>
+        where user_id=#{userId}
+    </update>
+    <update id="updateNumDown">
+        update comment set likenum=likenum-1 where id=#{commentId} and user_id=#{userId}
+    </update>
+    <insert id="saveState">
+        insert into dianzan values (#{userId},#{commentId},1)
+    </insert>
+    <select id="selectMax" resultType="Integer" >
+        select max(id) from comment
+    </select>
+    <delete id="delComment">
+        delete from comment where id=#{commentId}
+    </delete>
+    <delete id="delDianZan">
+        delete from dianzan where comment_id=#{commentId}
+    </delete>
+</mapper>

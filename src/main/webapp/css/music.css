@@ -1,0 +1,47 @@
+/*旋转动画*/
+@keyframes rotation {
+    from{transform: rotate(0deg)}
+    to{transform: rotate(360deg)}
+}
+.musicImage{
+    width: 200px;
+    height: 200px;
+    display: flex;
+    border-radius: 50%;
+    transform: rotate(360deg);
+    animation: rotation 12s linear infinite;
+}
+.ctr{
+    background-image: url("../images/play.jpg");
+    width: 36px;
+    height: 36px;
+    position:absolute;
+    border-radius: 50%;
+    left: 126px;
+    top: 126px;
+    background-position: -242px -87px;
+}
+
+.back-top{
+    background-image: url("../images/top.png");
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    position:absolute;
+    left: 126px;
+    top: 126px;
+    background-position: -242px -87px;
+}
+#master .ui-slider-handle {
+    border-color: #ffffff;
+}
+#master{background: rgba(0, 0, 0, 0.3);border:0px;}
+#musicProgress{margin-top:10px;}
+#musicMaster
+.ui-slider-range { background: #2d6adf; }
+#musicMaster .ui-slider-handle { border-color: #2d6adf; }
+#musicMaster .ui-slider-handle {
+    border-color: #ffffff;
+}
+#musicMaster{background: rgba(0, 0, 0, 0.3);border:0px;}
+

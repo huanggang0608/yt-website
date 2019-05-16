@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.ssmspringboot.dao.MenuMapper">
+
+    <resultMap id="colMenu" type="com.example.ssmspringboot.pojo.ColMenu" autoMapping="true">
+        <id column="user_id" property="userId"/>
+        <association property="menu" javaType="com.example.ssmspringboot.pojo.Menu" autoMapping="true" >
+            <id column="menu_id" property="menuId"/>
+            <result column="owner_id" property="userId"/>
+        </association>
+    </resultMap>
+
+
+    <select id="findById" resultType="com.example.ssmspringboot.pojo.Menu">
+      select * from menu where user_id=#{userId}
+    </select>
+    <select id="findMenu" resultType="com.example.ssmspringboot.pojo.Menu">
+      select * from menu where user_id=#{userId} and menu_name='我喜欢的音乐'
+    </select>
+    <insert id="addMenu" parameterType="com.example.ssmspringboot.pojo.Menu">
+        insert into menu (user_id,music_amount,menu_name,menu_image,createtime,music_ids) values (#{userId},#{musicAmount},#{menuName},#{menuImage},#{createtime},#{musicIds})
+    </insert>
+    <select id="selectColNum" resultType="int">
+        select count(1) from collect where menu_id=#{menuId}
+    </select>
+    <insert id="addColMenu" parameterType="com.example.ssmspringboot.pojo.ColMenu">
+        insert into collect (user_id,menu_id,music_amount,menu_image,createtime,music_ids,menu_name,presentation,owner_Id)
+        values (#{userId},#{menu.menuId},#{menu.musicAmount},#{menu.menuImage},#{menu.createtime},#{menu.musicIds},#{menu.menuName},#{menu.presentation},#{menu.userId})
+    </insert>
+    <delete id="delMenu">
+        delete from menu where menu_id=#{menuId}
+    </delete>
+    <delete id="delColMenu">
+        delete from collect where menu_id=#{menuId} and user_id=#{userId}
+    </delete>
+    <select id="findMenuById" resultType="com.example.ssmspringboot.pojo.Menu">
+        select *from menu where menu_id=#{menuId}
+    </select>
+
+    <update id="addMusic">
+         update menu set music_ids=#{musicIds} ,music_amount=music_amount+1 where menu_id=#{menuId}
+    </update>
+    <update id="delMusic">
+         update menu set music_ids=#{musicIds} ,music_amount=music_amount-1 where menu_id=#{menuId}
+    </update>
+
+    <update id="edit" parameterType="com.example.ssmspringboot.pojo.Menu">
+        update menu
+        <set>
+            <if test="menuName != null">
+                menu_name=#{menuName},
+            </if>
+            <if test="menuImage != null">
+                menu_image=#{menuImage},
+            </if>
+            <if test="presentation != null">
+                presentation=#{presentation},
+            </if>
+        </set>
+        where menu_id=#{menuId}
+    </update>
+    <select id="selectColMenu" resultMap="colMenu">
+        select * from collect c,menu m where c.user_id=#{userId} and c.menu_id=m.menu_id
+    </select>
+</mapper>
